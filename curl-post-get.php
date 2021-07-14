@@ -101,3 +101,44 @@
 
         return $data;
     }
+
+    private function curlRequestGet($url, $params,  $sessionToken )
+    {
+        $body = '{}';
+        $ch = curl_init();
+        if (!$ch) {
+            return null;
+        }
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        //curl_setopt($ch, CURLOPT_POST, 0);
+        curl_setopt($ch, CURLOPT_URL, $url . $params);
+        $headers = array();
+        $headers[] = "Content-Type: application/json";
+        if ($sessionToken!= null){
+            $headers[] = 'x-auth-access-token: '.$sessionToken;
+        }
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+
+//        echo "<hr/>";
+//        echo sprintf('CURL: %s %s', $url, json_encode($headers));
+//        echo "<hr/>";
+
+        $data = curl_exec($ch);
+
+        $curlErrorNumber = curl_errno($ch);
+        if ($curlErrorNumber) {
+            $error_msg = curl_error($ch);
+            echo $error_msg;
+        }
+        if (isset($error_msg)) {
+            echo $error_msg;
+        }
+
+        curl_close($ch);
+
+        return $data;
+    }
