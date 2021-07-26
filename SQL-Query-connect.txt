@@ -1,0 +1,55 @@
+    private function getConnectionold() {
+        $servername = "server_name_or_server_ip";
+        $port = "3306";
+
+        $username = "userhere";
+        $password = "passwordhere";
+        $dbname = "db_name";
+
+        $options = array(
+            PDO::MYSQL_ATTR_SSL_KEY           => '/file/to/ssl.pem',
+            PDO::MYSQL_ATTR_SSL_CERT          => '/file/to/ssl.pem',
+            PDO::MYSQL_ATTR_SSL_CA            => '/file/to/ssl.pem'
+        );
+
+        try
+        {
+            $connection = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password, $options);
+
+            return $connection;
+        }
+        catch( PDOException $e )
+        {
+            die("Failed connecting");
+        }
+    }
+
+    private function getConnection2() {
+        $db_info = array(
+            'host' => 'server_name_or_server_ip',
+            'port' => '3306',
+            'name' => 'db_name',
+            'user' => 'userhere',
+            'pass' => 'passwordhere',
+            'opts' => array(
+                PDO::MYSQL_ATTR_SSL_KEY    => '/file/to/ssl.pem',
+                PDO::MYSQL_ATTR_SSL_CERT   => '/file/to/ssl.pem',
+                PDO::MYSQL_ATTR_SSL_CA     => '/file/to/ssl.pem'
+            )
+        );
+
+        try
+        {
+            return new PDO( 'mysqli:host=' . $db_info['host'] . ';port=' . $db_info['port'] . ';dbname=' . $db_info['name'], $db_info['user'], $db_info['pass'], $db_info['opts'] );
+        }
+        catch (PDOException $e)
+        {
+            echo "DataBase Error: The user could not be added.<br>".$e->getMessage();
+        }
+        catch (Exception $e)
+        {
+            echo "General Error: The user could not be added.<br>".$e->getMessage();
+        }
+
+        return null;
+    }
